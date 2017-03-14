@@ -6,6 +6,7 @@ public class Bazhiz {
 	private int pingbanhao;
 	private int[] bazhisnum;
 	private Bazhi[] bazhis;
+	private int bazhishu;
 	public int getPingbanhao() {
 		return pingbanhao;
 	}
@@ -18,6 +19,7 @@ public class Bazhiz {
 	public Bazhiz(int pingbanhao, Bazhi[] bazhis) {
 		this.pingbanhao = pingbanhao;
 		this.bazhis = bazhis;
+		this.bazhishu=bazhis.length;
 		bazhisnum=new int[bazhis.length];
 		for(int i=0;i<bazhis.length;i++){
 			bazhisnum[i]=bazhis[i].getBianhao();
@@ -34,6 +36,37 @@ public class Bazhiz {
 	}
 	public void setBazhis(Bazhi[] bazhis) {
 		this.bazhis = bazhis;
+	}
+	public void addBazhis(Bazhi[] bazhis){
+		int w=this.bazhishu+bazhis.length;
+		Bazhi[] www=new Bazhi[w];
+		for(int i=0;i<this.bazhishu;i++){
+			www[i]=this.bazhis[i];
+		}
+		for(int i=0;i<bazhis.length;i++){
+			www[this.bazhishu+i]=bazhis[i];
+		}
+		this.bazhis=www;
+		this.bazhishu=w;
+		this.bazhisnum=new int[this.bazhis.length];
+		for(int i=0;i<this.bazhis.length;i++){
+			bazhisnum[i]=this.bazhis[i].getBianhao();
+		}
+	}
+	public void deleteBazhis(Bazhi[] bazhis){
+		
+	}
+	public void updateBazhis(Bazhi[] bazhis){
+		
+	}
+    public void addBazhis(Bazhi bazhi){
+		
+	}
+	public void deleteBazhis(Bazhi bazhi){
+		
+	}
+	public void updateBazhis(Bazhi bazhi){
+		
 	}
 
 }

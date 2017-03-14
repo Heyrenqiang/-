@@ -3,6 +3,20 @@ package dabaxunlian;
 public class Dabarenyuan extends Tubiao{
 	private int bianhao;
 	private String xingming;
+	private String alert;
+	private String debuge;
+	public String getAlert() {
+		return alert;
+	}
+	public void setAlert(String alert) {
+		this.alert = alert;
+	}
+	public String getDebuge() {
+		return debuge;
+	}
+	public void setDebuge(String debuge) {
+		this.debuge = debuge;
+	}
 	public int getBianhao() {
 		return bianhao;
 	}

@@ -4,6 +4,15 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class Main {
+	private static Daba1 mainform;
+
+	public static Daba1 getMainform() {
+		return mainform;
+	}
+
+	public static void setMainform(Daba1 mainform) {
+		Main.mainform = mainform;
+	}
 
 	public static void main(String[] args) {
 		// TODO 自动生成的方法存根
@@ -23,8 +32,11 @@ public class Main {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
-		//Daba1 mainfoem =new Daba1("打靶控制界面");
-		new Daba1("打靶控制界面");
+		mainform =new Daba1("打靶控制界面");
+		//new Daba1("打靶控制界面");
+//		Datatest datatest=new Datatest();
+//		datatest.setActionListener(mainform);
+//		datatest.start();
 	}
 
 }

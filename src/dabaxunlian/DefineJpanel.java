@@ -1,13 +1,11 @@
 package dabaxunlian;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import javax.swing.JButton;
@@ -76,13 +74,17 @@ public class DefineJpanel extends JPanel implements ActionListener{
 		}
 		Arrays.sort(bazhis);
 		for(int i=0;i<bazhinum;i++){
-			System.out.println(bazhis[i]);
+			//System.out.println(bazhis[i]);
 		}
 		for(int i=0;i<bazhinum;i++){
 			str =str +String.valueOf(bazhis[i])+",";
 		}
 		//str.substring(0,str.length()-1);
+		if(bazhinum >0){
 		strbazhi="   °Ð#:"+str.substring(0,str.length()-1);
+		}else{
+			strbazhi="   °Ð#:";
+		}
 	}
 	public int[] getBazhis() {
 		return bazhis;

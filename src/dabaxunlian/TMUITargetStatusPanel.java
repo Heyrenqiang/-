@@ -1,52 +1,48 @@
 package dabaxunlian;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
-//import net.miginfocom.swing.MigLayout;
-import java.awt.FlowLayout;
-import javax.swing.UIManager;
+import javax.swing.JToolBar;
 import javax.swing.border.MatteBorder;
 
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Rectangle;
 import java.awt.Font;
-import java.awt.Graphics;
-
-import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.AbstractListModel;
-import javax.swing.border.LineBorder;
+import javax.swing.SwingConstants;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.ScrollPaneConstants;
 
 public class TMUITargetStatusPanel extends JPanel {
-	private JTextField textField;
-	private JTextField textField_4;
-	private JTextField textField_6;
-	private JTextField textField_7;
 	private JScrollPane scrollPane;
 	private JList list;
+	private JScrollPane scrollPane_1;
+	private JTable table;
 
 	/**
 	 * Create the panel.
 	 */
 	public TMUITargetStatusPanel() {
 		setBorder(BorderFactory.createLineBorder(Color.white));// 设置面板边框颜色
-		setLayout(new GridLayout(0, 2, 0, 0));
+		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(0, 150));
+		JPanel jPanel=new JPanel();
+		jPanel.setLayout(new GridLayout(0, 2, 0, 0));
+		add(jPanel, BorderLayout.CENTER);
+		
 		
 		JPanel panel = new JPanel();
-		add(panel);
+		jPanel.add(panel);
 		
 		JPanel panel_1 = new JPanel();
-		add(panel_1);
+		jPanel.add(panel_1);
 		panel.setBorder(BorderFactory.createTitledBorder("系统消息"));
 		panel.setLayout(new BorderLayout(0, 0));
 		
@@ -75,26 +71,40 @@ public class TMUITargetStatusPanel extends JPanel {
 		scrollPane.setViewportView(list);
 		MatteBorder border=new MatteBorder(0, 0, 1, 0, (Color) Color.LIGHT_GRAY);
 		panel_1.setBorder(BorderFactory.createTitledBorder("成绩"));
-		panel_1.setLayout(new GridLayout(0, 1, 0, 0));
+		panel_1.setLayout(new BorderLayout(0, 0));
 		
-		textField = new JTextField();
-		panel_1.add(textField);
-		//textField.setColumns(10);
-		textField.setBorder(border);
+		scrollPane_1 = new JScrollPane();
+		panel_1.add(scrollPane_1, BorderLayout.CENTER);
 		
-		textField_4 = new JTextField();
-		panel_1.add(textField_4);
-		//textField_4.setColumns(10);
-		textField_4.setBorder(border);
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+			},
+			new String[] {
+				"New column", "New column", "New column"
+			}
+		));
+		table.getColumnModel().getColumn(0).setPreferredWidth(111);
+		table.getColumnModel().getColumn(1).setPreferredWidth(162);
+		scrollPane_1.setViewportView(table);
 		
-		textField_6 = new JTextField();
-		panel_1.add(textField_6);
-		//textField_6.setColumns(10);
-		textField_6.setBorder(border);		
-		textField_7 = new JTextField();
-		panel_1.add(textField_7);
-		//textField_7.setColumns(10);
-		textField_7.setBorder(border);
+		
 	}
 
 }

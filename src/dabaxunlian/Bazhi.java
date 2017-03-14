@@ -1,7 +1,73 @@
 package dabaxunlian;
 
 public class Bazhi extends Tubiao{
-	private int bianhao;
+	private int bianhao;//编号
+	private int seqbianhao;//靶序列编号
+	private int group;//所属组
+	private int temprature;//温度
+	private int light;//灯光
+	private String alert;//报警信息
+	private String pose;//姿态
+	private int hit;//成绩
+	private String debug;//调试信息
+	private int chengji;//成绩
+	private int zuhao;//组号
+	private String qiya;//气压
+	private String dianliang;//电量
+	private int suodingyf;
+	private boolean isdongzuo;
+	private boolean isxuanzhong;
+	private boolean isweidazhong;
+	private boolean isdazhong;
+	
+	public int getSeqbianhao() {
+		return seqbianhao;
+	}
+	public void setSeqbianhao(int seqbianhao) {
+		this.seqbianhao = seqbianhao;
+	}
+	public int getGroup() {
+		return group;
+	}
+	public void setGroup(int group) {
+		this.group = group;
+	}
+	public int getTemprature() {
+		return temprature;
+	}
+	public void setTemprature(int temprature) {
+		this.temprature = temprature;
+	}
+	public int getLight() {
+		return light;
+	}
+	public void setLight(int light) {
+		this.light = light;
+	}
+	public String getAlert() {
+		return alert;
+	}
+	public void setAlert(String alert) {
+		this.alert = alert;
+	}
+	public String getPose() {
+		return pose;
+	}
+	public void setPose(String pose) {
+		this.pose = pose;
+	}
+	public int getHit() {
+		return hit;
+	}
+	public void setHit(int hit) {
+		this.hit = hit;
+	}
+	public String getDebug() {
+		return debug;
+	}
+	public void setDebug(String debug) {
+		this.debug = debug;
+	}
 	public int getBianhao() {
 		return bianhao;
 	}
@@ -25,15 +91,7 @@ public class Bazhi extends Tubiao{
 		this.qiya = qiya;
 		this.dianliang = dianliang;
 	}
-	private int chengji;
-	private int zuhao;
-	private int suodingyf;
-	private boolean isdongzuo;
-	private boolean isxuanzhong;
-	private boolean isweidazhong;
-	private boolean isdazhong;
-	private String qiya;
-	private String dianliang;
+	
 	public int getChengji() {
 		return chengji;
 	}

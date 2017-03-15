@@ -744,6 +744,7 @@ public class Daba1 extends JFrame implements Datainterface {
 	public void dataUpdate(Tubiao[] tubiaos) {
 		// TODO 自动生成的方法存根
 		System.out.println("数据更新");
+		System.out.println();
 	}
 }
 

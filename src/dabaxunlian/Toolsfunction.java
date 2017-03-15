@@ -44,10 +44,12 @@ public class Toolsfunction {
 		int k = Guanlifenzu.getGroupedbazhinum();
 		boolean isexist = false;
 		Bazhi[] bazhis2 = new Bazhi[100];
+		Bazhi[] bazhis5=new Bazhi[100];
 		int num = 0;
 		int[] existedbazhi = new int[100];
+		int[] notexistedbazhi=new int[100];
+		//int[] existedbazhi1=new int[100];
 		int existednum = 0;
-		int yesorno = 10;
 		for (int i = 0; i < bazhis.length; i++) {
 			for (int j = 0; j < k; j++) {
 				if (bazhis[i].getBianhao() == Guanlifenzu.getGroupedbazhis()[j]) {
@@ -59,43 +61,63 @@ public class Toolsfunction {
 			}
 			if (isexist) {
 				existedbazhi[existednum] = bazhis[i].getBianhao();
+				bazhis5[existednum]=bazhis[i];
 				existednum++;
 				isexist=false;
 			} else {
-				//groupedbazhis[groupedbazhinum] = bazhis[i].getBianhao();
 				Guanlifenzu.getGroupedbazhis()[Guanlifenzu.getGroupedbazhinum()]= bazhis[i].getBianhao();
-				//groupedbazhinum++;
 				Guanlifenzu.setGroupedbazhinum(Guanlifenzu.getGroupedbazhinum()+1);
+				notexistedbazhi[num]=bazhis[i].getBianhao();
 				bazhis2[num] = bazhis[i];
 				num++;
 			}
 		}
+		System.out.println(existednum);
 		Bazhi[] bazhis3 = new Bazhi[num];
+		int [] notexistedbazhi1=new int[num];
 		for (int i = 0; i < num; i++) {
 			bazhis3[i] = bazhis2[i];
+			notexistedbazhi1[i]=notexistedbazhi[i];
 		}
-		if (existednum > 0) {
-			String string = Guanlifenzu.num2str(existedbazhi, existednum);
-			yesorno = JOptionPane.showConfirmDialog(null, string + "已经被分组,是否继续？", "", JOptionPane.YES_NO_OPTION);
+		Bazhi [] bazhis4=new Bazhi[existednum];
+		int [] existedbazhi1=new int[existednum];
+		for(int i=0;i<existednum;i++){
+			bazhis4[i]=bazhis5[i];
+			existedbazhi1[i]=existedbazhi[i];
 		}
 		Definedata definedata=new Definedata();
-		definedata.setYesorno(yesorno);
 		definedata.setExistednum(existednum);
+		definedata.setExistedbazhi(existedbazhi1);
+		definedata.setNotexistedbazhi(notexistedbazhi1);
 		definedata.setBazhis3(bazhis3);
+		definedata.setBazhis4(bazhis4);
 		return definedata;
-
 	}
 }
 
 class Definedata {
-	private int yesorno;
 	private int existednum;
 	private Bazhi[] bazhis3;
-	public int getYesorno() {
-		return yesorno;
+	private Bazhi[] bazhis4;
+	private int[] existedbazhi;
+	private int[] notexistedbazhi;
+	public int[] getExistedbazhi() {
+		return existedbazhi;
 	}
-	public void setYesorno(int yesorno) {
-		this.yesorno = yesorno;
+	public void setExistedbazhi(int[] existedbazhi) {
+		this.existedbazhi = existedbazhi;
+	}
+	public int[] getNotexistedbazhi() {
+		return notexistedbazhi;
+	}
+	public void setNotexistedbazhi(int[] notexistedbazhi) {
+		this.notexistedbazhi = notexistedbazhi;
+	}
+	public Bazhi[] getBazhis4() {
+		return bazhis4;
+	}
+	public void setBazhis4(Bazhi[] bazhis4) {
+		this.bazhis4 = bazhis4;
 	}
 	public int getExistednum() {
 		return existednum;

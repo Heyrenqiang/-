@@ -33,10 +33,10 @@ public class Main {
 			e.printStackTrace();
 		}
 		mainform =new Daba1("打靶控制界面");
-		//new Daba1("打靶控制界面");
-//		Datatest datatest=new Datatest();
-//		datatest.setActionListener(mainform);
-//		datatest.start();
+		Datatest datatest=new Datatest();
+		Commandsending commandsending=new Commandsending();
+		mainform.addlistener(commandsending);
+		datatest.setActionListener(mainform);
 	}
 
 }

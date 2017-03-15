@@ -1,19 +1,11 @@
 package dabaxunlian;
 
 public class Datatest {
-	private Datatest datatest;
-	private static int i=0;
 	public Datatest(){
-		datatest=this;
 	}
-	private Tubiao tubiao;
-	private Bazhi bazhi;
-	private Dabarenyuan dabarenyuan;
-	private boolean state=true;
+	private Tubiao[] tubiaos;
+	private Datainterface datainterface;
 	public void start() {
-		tubiao=new Tubiao();
-		bazhi=new Bazhi();
-		dabarenyuan=new Dabarenyuan();
 		new Thread(new Runnable() {
 			
 			@Override
@@ -26,22 +18,13 @@ public class Datatest {
 						// TODO 自动生成的 catch 块
 						e.printStackTrace();
 					}
-					i++;
-					//System.out.println();
-					bazhi.setIsdazhong(!state);
-					state=!state;
-					bazhi.setIsweidazhong(!bazhi.isIsdazhong());
-					tubiao=bazhi;
-					//tubiao.setName("i am "+String.valueOf(i));
-					//action.act(context, i,data);
-					daba1.dataUpdate(tubiao);
+					tubiaos=new Tubiao[1];
+					datainterface.dataUpdate(tubiaos);
 				}
 			}
 		}).start();
 	}
-	private Daba1 daba1;
-	public void setActionListener(Daba1 daba1){
-		this.daba1=daba1;
+	public void setActionListener(Datainterface datainterface){
+		this.datainterface=datainterface;
 	}
-
 }

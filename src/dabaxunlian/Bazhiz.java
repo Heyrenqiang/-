@@ -53,6 +53,26 @@ public class Bazhiz {
 			bazhisnum[i]=this.bazhis[i].getBianhao();
 		}
 	}
+	public void deleteBazhis(Bazhi bazhi){
+		//bazhi.setGroup(0);
+		int w=this.bazhis.length-1;
+		Bazhi[] www=new Bazhi[w];
+		int k=0;
+		for(int i=0;i<this.bazhis.length;i++){
+			if(this.bazhis[i].equals(bazhi)){
+				
+			}else{
+				www[k]=this.bazhis[i];
+				k++;
+			}
+		}
+		this.bazhis=www;
+		this.bazhishu=w;
+		this.bazhisnum=new int[w];
+		for(int i=0;i<w;i++){
+			bazhisnum[i]=this.bazhis[i].getBianhao();
+		}
+	}
 	public void deleteBazhis(Bazhi[] bazhis){
 		
 	}
@@ -60,9 +80,6 @@ public class Bazhiz {
 		
 	}
     public void addBazhis(Bazhi bazhi){
-		
-	}
-	public void deleteBazhis(Bazhi bazhi){
 		
 	}
 	public void updateBazhis(Bazhi bazhi){

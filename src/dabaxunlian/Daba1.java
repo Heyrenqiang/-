@@ -1,9 +1,7 @@
 package dabaxunlian;
 
 import java.awt.*;
-
 import javax.swing.*;
-
 import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -30,6 +28,7 @@ public class Daba1 extends JFrame implements Datainterface {
 	private static Reflesh reflesh = new Reflesh("reflesh");
 	public static int[][] data = new int[1000][10];
 	public static int[][] datacurrent = new int[1000][10];
+	public static int yunxingflag = 10;
 	private boolean tuozhuai = false;
 	private boolean dianjifangda = false;
 	private boolean dianjisuoxiao = false;
@@ -55,7 +54,7 @@ public class Daba1 extends JFrame implements Datainterface {
 	static Huitupanel huitupanel = new Huitupanel();
 	JTextArea dataarea = new JTextArea();
 
-	JButton button1 = new JButton("\u7ED8\u56FE");
+	JButton button1 = new JButton("复位");
 	JButton button2 = new JButton("");
 	JButton button3 = new JButton("");
 	JButton button4 = new JButton("拖拽");
@@ -71,6 +70,7 @@ public class Daba1 extends JFrame implements Datainterface {
 	MenuItem menuItem4 = new MenuItem("退出分组");
 	private final JButton button = new JButton("初始化");
 	private final JButton button_1 = new JButton("启动");
+	private final JButton button_2 = new JButton("停止");
 
 	public Daba1(String title) {
 		super(title);
@@ -102,17 +102,15 @@ public class Daba1 extends JFrame implements Datainterface {
 		jToolBar.add(button1);
 		button7.setIcon(icon6);// 全屏
 
-		button2.setToolTipText("放大");
-
 		jToolBar.setFloatable(true);
 		panel1.add(jToolBar, BorderLayout.EAST);
 
 		jToolBar.add(button);
-
+		button.addActionListener(new Chushihualistener());
 		jToolBar.add(button_1);
-
-		JButton button_2 = new JButton("停止");
+		button_1.addActionListener(new Qidonglistener());
 		jToolBar.add(button_2);
+		button_2.addActionListener(new Tingzhilistener());
 		panel1.add(huitupanel, BorderLayout.CENTER);
 
 		tmuiControlPanel.setPreferredSize(new Dimension(313, 0));
@@ -122,13 +120,13 @@ public class Daba1 extends JFrame implements Datainterface {
 		container.add(tmuiControlPanel, BorderLayout.EAST);
 		container.add(tmuiTargetStatusPanel, BorderLayout.SOUTH);
 
-		button1.addActionListener(new Myactionlistener1());
-		button2.addActionListener(new Myactionlistener2());
-		button3.addActionListener(new Myactionlistener3());
-		button4.addActionListener(new Myactionlistener4());
-		button5.addActionListener(new Myactionlistener5());
-		button6.addActionListener(new Myactionlistener6());
-		button7.addActionListener(new Myactionlistener10());
+		button1.addActionListener(new Fuweilistener());
+		button2.addActionListener(new Fangdalistener());
+		button3.addActionListener(new Suoxiaolistener());
+		button4.addActionListener(new Tuozhuailistener());
+		button5.addActionListener(new Dianjifangdalistener());
+		button6.addActionListener(new Dianjisuoxiaolistener());
+		button7.addActionListener(new Suofanglistener());
 		// button.addActionListener(commandlistenerInterface);
 
 		popupMenu.add(menuItem1);
@@ -137,10 +135,10 @@ public class Daba1 extends JFrame implements Datainterface {
 		popupMenu.add(menuItem4);
 		huitupanel.add(popupMenu);
 
-		menuItem1.addActionListener(new Myactionlistener7());
+		menuItem1.addActionListener(new Dongzuolistener());
 		menuItem2.addActionListener(new TianjiafenzuListener());
 		menuItem3.addActionListener(new Tianjiadaozulistener());
-		menuItem4.addActionListener(new Myactionlistener11());
+		menuItem4.addActionListener(new Tuichufenzulistener());
 
 		huitupanel.addMouseListener(new Mymouse());
 		huitupanel.addMouseMotionListener(new Mymouse());
@@ -148,28 +146,37 @@ public class Daba1 extends JFrame implements Datainterface {
 		this.setVisible(true);
 	}
 
-	@Override
-	public void dataUpdate(Tubiao tubiao) {
-		// System.out.println("测试一下");
-		((Bazhi) (tubiaos[0])).setIsdazhong(((Bazhi) (tubiao)).isIsdazhong());
-		((Bazhi) (tubiaos[0])).setIsweidazhong(((Bazhi) (tubiao)).isIsweidazhong());
-		huitupanel.displayzhengti(tubiaos, pointnum);
+	public void addlistener(CommandlistenerInterface commandlistener) {
+		this.commandlistenerInterface = commandlistener;
 	}
 
-	@Override
-	public void commandUpdate() {
-		System.out.println(2);
-	}
+	private class Tingzhilistener implements ActionListener {
 
-	private class Myactionlistener11 implements ActionListener {
+		@Override
 		public void actionPerformed(ActionEvent e) {
-			// *********退出分组***********//
-
+			// TODO 自动生成的方法存根
+			yunxingflag = 3;
+			commandlistenerInterface.syatemStop();
 		}
 	}
 
-	private class Myactionlistener1 implements ActionListener {
+	private class Qidonglistener implements ActionListener {
+
+		@Override
 		public void actionPerformed(ActionEvent e) {
+			// TODO 自动生成的方法存根
+			yunxingflag = 2;
+			commandlistenerInterface.systemStart();
+		}
+
+	}
+
+	private class Chushihualistener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO 自动生成的方法存根
+			yunxingflag = 1;
 			String filePath = "TXTfile/data.txt";
 			String encoding = "GBK";
 			File file = new File(filePath);
@@ -235,8 +242,6 @@ public class Daba1 extends JFrame implements Datainterface {
 					k++;
 				}
 			}
-			// huitupanel.display(data, pointnum);
-			/////////////////////////////////////////////////////////////////////////////
 			huitupanel.displayzhengti(tubiaos, pointnum);
 			tmuiControlPanel.getPanel_7().removeAll();
 			tmuiControlPanel.getPanel_7().repaint();
@@ -247,172 +252,217 @@ public class Daba1 extends JFrame implements Datainterface {
 			Datatest datatest = new Datatest();
 			datatest.setActionListener(Main.getMainform());
 			datatest.start();
-			Commandsending commandsending = new Commandsending();
-			commandlistenerInterface = commandsending;
+			commandlistenerInterface.systemInitialize();
+			Bazhiz[] bazhizs = new Bazhiz[Guanlifenzu.getZushu()];
+			for (int i = 0; i < bazhizs.length; i++) {
+				bazhizs[i] = Guanlifenzu.getBazhizs()[i + 1];
+			}
+			commandlistenerInterface.groupinfoUpdate(bazhizs);
+		}
+	}
+
+	private class Tuichufenzulistener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			// *********退出分组***********//
+			if (yunxingflag == 1) {
+				String strbazhi = getXuanzhong();
+				int[] a = Toolsfunction.str2num(strbazhi);
+				Bazhi[] bazhisijk = new Bazhi[a.length];
+				for (int i = 0; i < a.length; i++) {
+					bazhisijk[i] = bazhis[a[i] - 1];
+				}
+				Guanlifenzu.tuichuFenzhu(bazhisijk);
+				Guanlifenzu.showpanel();
+			}
+		}
+	}
+
+	private class TianjiafenzuListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (yunxingflag == 1) {
+				String strbazhi = getXuanzhong();
+				Defineframe defineframe = new Defineframe();
+				defineframe.getTextField().setText(strbazhi);
+				defineframe.setVisible(true);
+				defineframe.getButton().addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						defineframe.dispose();
+					}
+				});
+				defineframe.getBtnNewButton().addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						String[] mStrings = defineframe.getTextField().getText().split(",");
+						int j = mStrings.length;
+						int[] a = new int[mStrings.length];
+						if (!mStrings[0].equals("")) {
+							for (int i = 0; i < mStrings.length; i++) {
+								a[i] = Integer.parseInt(mStrings[i]);
+							}
+							Bazhi[] bazhiijk = new Bazhi[j];
+							for (int i = 0; i < j; i++) {
+								bazhiijk[i] = bazhis[a[i] - 1];
+							}
+							System.out.println(bazhiijk.length);
+							Guanlifenzu.creatfenzu(bazhiijk);
+							Guanlifenzu.showpanel();
+						} else {
+							Bazhi[] bazhikji = new Bazhi[0];
+							Guanlifenzu.creatfenzu(bazhikji);
+							// Guanlifenzu.creatnewpanel();
+							Guanlifenzu.showpanel();
+						}
+						defineframe.dispose();
+					}
+				});
+			}
+		}
+	}
+
+	private class Fuweilistener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
 
 		}
 	}
 
 	private class Tianjiadaozulistener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			// System.out.println("刷新");
-			// 添加到组
-			String string = getXuanzhong();
-			Defineframe1 defineframe1 = new Defineframe1(Guanlifenzu.getZushu(), string);
-			defineframe1.setVisible(true);
-			// defineframe1.getComboBox().addActionListener(new ActionListener()
-			// {
-			// public void actionPerformed(ActionEvent e) {
-			// System.out.println();
-			// }
-			// });
-			defineframe1.getBtnNewButton().addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					// System.out.println(defineframe1.getComboBox().getSelectedItem());
-					// System.out.println("确定");
-					String[] mStrings = defineframe1.getTextField().getText().split(",");
-					// System.out.println(mStrings.length);
-					int j = mStrings.length;
-					int[] a = new int[mStrings.length];
-					if (!mStrings[0].equals("")) {
-						for (int i = 0; i < mStrings.length; i++) {
-							a[i] = Integer.parseInt(mStrings[i]);
+			if (yunxingflag == 1) {
+				String string = getXuanzhong();
+				Defineframe1 defineframe1 = new Defineframe1(Guanlifenzu.getZushu(), string);
+				defineframe1.setVisible(true);
+				defineframe1.getBtnNewButton().addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						String[] mStrings = defineframe1.getTextField().getText().split(",");
+						int j = mStrings.length;
+						int[] a = new int[mStrings.length];
+						if (!mStrings[0].equals("")) {
+							for (int i = 0; i < mStrings.length; i++) {
+								a[i] = Integer.parseInt(mStrings[i]);
+							}
+							Bazhi[] bazhiijk = new Bazhi[j];
+							for (int i = 0; i < j; i++) {
+								bazhiijk[i] = bazhis[a[i] - 1];
+							}
+							Guanlifenzu.tianjiaDaozu((int) defineframe1.getComboBox().getSelectedItem(), bazhiijk);
+							Guanlifenzu.showpanel();
+						} else {
+							Bazhi[] bazhikji = new Bazhi[0];
+							Guanlifenzu.tianjiaDaozu((int) defineframe1.getComboBox().getSelectedItem(), bazhikji);
+							Guanlifenzu.showpanel();
 						}
-						Bazhi[] bazhiijk = new Bazhi[j];
-						for (int i = 0; i < j; i++) {
-							bazhiijk[i] = bazhis[a[i] - 1];
-						}
-						Guanlifenzu.tianjiaDaozu((int) defineframe1.getComboBox().getSelectedItem(), bazhiijk);
-						// Guanlifenzu.creatnewpanel();
-						Guanlifenzu.showpanel();
-					} else {
-						Bazhi[] bazhikji = new Bazhi[0];
-						Guanlifenzu.tianjiaDaozu((int) defineframe1.getComboBox().getSelectedItem(), bazhikji);
-						// Guanlifenzu.creatnewpanel();
-						Guanlifenzu.showpanel();
+						defineframe1.dispose();
 					}
-					defineframe1.dispose();
+				});
+				defineframe1.getBtnNewButton_1().addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						defineframe1.dispose();
+					}
+				});
+			}
+		}
+	}
+
+	private class Fangdalistener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (yunxingflag == 1 || yunxingflag == 2) {
+				for (int i = 0; i < pointnum; i++) {
+					tubiaos[i].setPointx((int) (1.1 * (tubiaos[i].getPointx() - huitupanel.getWidth() / 2)
+							+ huitupanel.getWidth() / 2));
+					tubiaos[i].setPointy((int) (1.1 * (tubiaos[i].getPointy() - huitupanel.getWidth() / 2)
+							+ huitupanel.getWidth() / 2));
 				}
-			});
-			defineframe1.getBtnNewButton_1().addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					defineframe1.dispose();
+				huitupanel.displayzhengti(tubiaos, pointnum);
+			}
+		}
+	}
+
+	private class Suoxiaolistener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (yunxingflag == 1 || yunxingflag == 2) {
+				for (int i = 0; i < pointnum; i++) {
+					tubiaos[i].setPointx((int) ((tubiaos[i].getPointx() - huitupanel.getWidth() / 2) / 1.1
+							+ huitupanel.getWidth() / 2));
+					tubiaos[i].setPointy((int) ((tubiaos[i].getPointy() - huitupanel.getWidth() / 2) / 1.1
+							+ huitupanel.getWidth() / 2));
 				}
-			});
-
-			commandlistenerInterface.commandUpdate();
+				huitupanel.displayzhengti(tubiaos, pointnum);
+			}
 		}
 	}
 
-	private class Myactionlistener2 implements ActionListener {
+	private class Tuozhuailistener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			// for (int i = 0; i < pointnum; i++) {
-			// datacurrent[i][0] = (int) (1.1 * (datacurrent[i][0] -
-			// huitupanel.getWidth() / 2)
-			// + huitupanel.getWidth() / 2);
-			// datacurrent[i][1] = (int) (1.1 * (datacurrent[i][1] -
-			// huitupanel.getHeight() / 2)
-			// + huitupanel.getHeight() / 2);
-			// }
-			// huitupanel.display(datacurrent, pointnum);
+			if (yunxingflag == 1 || yunxingflag == 2) {
+				tuozhuai = !tuozhuai;
+				dianjifangda = false;
+				dianjisuoxiao = false;
 
-			///////////////////////////////////////////////////////////////////////////
-			for (int i = 0; i < pointnum; i++) {
-				tubiaos[i].setPointx(
-						(int) (1.1 * (tubiaos[i].getPointx() - huitupanel.getWidth() / 2) + huitupanel.getWidth() / 2));
-				tubiaos[i].setPointy(
-						(int) (1.1 * (tubiaos[i].getPointy() - huitupanel.getWidth() / 2) + huitupanel.getWidth() / 2));
+				if (tuozhuai) {
+
+					huitupanel.setCursor(cutuozhuai);
+					button4.setBackground(Color.red);
+					button5.setBackground(null);
+					button6.setBackground(null);
+				} else {
+					huitupanel.setCursor(null);
+					button4.setBackground(null);
+				}
+				for (int i = 0; i < pointnum; i++) {
+					tuozhuaibuffx[i] = tubiaos[i].getPointx();
+					tuozhuaibuffy[i] = tubiaos[i].getPointy();
+				}
 			}
-			huitupanel.displayzhengti(tubiaos, pointnum);
 		}
 	}
 
-	private class Myactionlistener3 implements ActionListener {
+	private class Dianjifangdalistener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			// for (int i = 0; i < pointnum; i++) {
-			// datacurrent[i][0] = (int) ((datacurrent[i][0] -
-			// huitupanel.getWidth() / 2) / 1.1
-			// + huitupanel.getWidth() / 2);
-			// datacurrent[i][1] = (int) (((datacurrent[i][1] -
-			// huitupanel.getHeight() / 2)) / 1.1
-			// + huitupanel.getHeight() / 2);
-			//
-			// }
-			// huitupanel.display(datacurrent, pointnum);
-			/////////////////////////////////////////////////////////////////////////////
-			for (int i = 0; i < pointnum; i++) {
-				tubiaos[i].setPointx(
-						(int) ((tubiaos[i].getPointx() - huitupanel.getWidth() / 2) / 1.1 + huitupanel.getWidth() / 2));
-				tubiaos[i].setPointy(
-						(int) ((tubiaos[i].getPointy() - huitupanel.getWidth() / 2) / 1.1 + huitupanel.getWidth() / 2));
+			if (yunxingflag == 1 || yunxingflag == 2) {
+				dianjifangda = !dianjifangda;
+				dianjisuoxiao = false;
+				tuozhuai = false;
+				if (dianjifangda) {
+					huitupanel.setCursor(cufaangda);
+					button5.setBackground(Color.red);
+					button6.setBackground(null);
+					button4.setBackground(null);
+				} else {
+					huitupanel.setCursor(null);
+					button5.setBackground(null);
+				}
 			}
-			huitupanel.displayzhengti(tubiaos, pointnum);
 		}
 	}
 
-	private class Myactionlistener4 implements ActionListener {
+	private class Dianjisuoxiaolistener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			tuozhuai = !tuozhuai;
-			dianjifangda = false;
-			dianjisuoxiao = false;
-
-			if (tuozhuai) {
-
-				huitupanel.setCursor(cutuozhuai);
-				button4.setBackground(Color.red);
-				button5.setBackground(null);
-				button6.setBackground(null);
-			} else {
-				huitupanel.setCursor(null);
-				button4.setBackground(null);
-			}
-			for (int i = 0; i < pointnum; i++) {
-				// tuozhuaibuffx[i] = datacurrent[i][0];
-				// tuozhuaibuffy[i] = datacurrent[i][1];
-				////////////////////////////////////////////////////////////////////////
-				tuozhuaibuffx[i] = tubiaos[i].getPointx();
-				tuozhuaibuffy[i] = tubiaos[i].getPointy();
+			if (yunxingflag == 1 || yunxingflag == 2) {
+				dianjisuoxiao = !dianjisuoxiao;
+				dianjifangda = false;
+				tuozhuai = false;
+				if (dianjisuoxiao) {
+					huitupanel.setCursor(cusuoxiao);
+					button6.setBackground(Color.red);
+					button5.setBackground(null);
+					button4.setBackground(null);
+				} else {
+					huitupanel.setCursor(null);
+					button6.setBackground(null);
+				}
 			}
 		}
 	}
 
-	private class Myactionlistener5 implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			dianjifangda = !dianjifangda;
-			dianjisuoxiao = false;
-			tuozhuai = false;
-			if (dianjifangda) {
-				huitupanel.setCursor(cufaangda);
-				button5.setBackground(Color.red);
-				button6.setBackground(null);
-				button4.setBackground(null);
-			} else {
-				huitupanel.setCursor(null);
-				button5.setBackground(null);
-			}
-		}
-	}
-
-	private class Myactionlistener6 implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			dianjisuoxiao = !dianjisuoxiao;
-			dianjifangda = false;
-			tuozhuai = false;
-			if (dianjisuoxiao) {
-				huitupanel.setCursor(cusuoxiao);
-				button6.setBackground(Color.red);
-				button5.setBackground(null);
-				button4.setBackground(null);
-			} else {
-				huitupanel.setCursor(null);
-				button6.setBackground(null);
-			}
-		}
-	}
-
-	private class Myactionlistener7 implements ActionListener {
+	private class Dongzuolistener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// 动作
+			String string = getXuanzhong();
+			int[] a = Toolsfunction.str2num(string);
+			Bazhi[] bazhisijk = new Bazhi[a.length];
+			for (int i = 0; i < a.length; i++) {
+				bazhisijk[i] = bazhis[a[i] - 1];
+			}
+			commandlistenerInterface.bazhisAction(bazhisijk);
 		}
 	}
 
@@ -432,7 +482,6 @@ public class Daba1 extends JFrame implements Datainterface {
 		for (int i = 0; i < j; i++) {
 			str = str + String.valueOf(((Bazhi) (tubiaos[k[i]])).getBianhao()) + ",";
 		}
-		// str.substring(0,str.length()-1);
 		if (j > 0) {
 			strbazhi = str.substring(0, str.length() - 1);
 		}
@@ -440,92 +489,7 @@ public class Daba1 extends JFrame implements Datainterface {
 	}
 
 	// 分组
-	private class TianjiafenzuListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			// int j = 0;
-			// int[] k = new int[100];
-			// for (int i = 0; i < pointnum; i++) {
-			// if ((data[i][5] == 1) && (data[i][2] == 1)) {
-			// k[j] = data[i][3] - 1;
-			// j++;
-			// }
-			// }
-			// Bazhi[] bazhiijk = new Bazhi[j];
-			// for (int i = 0; i < j; i++) {
-			// bazhiijk[i] = bazhis[k[i]];
-			// }
-			////////////////////////////////////////////////////////////////////////////
-			// int j = 0;
-			// int[] k = new int[100];
-			// for (int i = 0; i < pointnum; i++) {
-			// if (tubiaos[i] instanceof Bazhi) {
-			// if (((Bazhi) (tubiaos[i])).isIsxuanzhong() == true) {
-			// k[j] = i;
-			// j++;
-			// }
-			// }
-			// }
-			// String str = "";
-			// String strbazhi = "";
-			// for (int i = 0; i < j; i++) {
-			// str = str + String.valueOf(((Bazhi)
-			// (tubiaos[k[i]])).getBianhao()) + ",";
-			// }
-			// // str.substring(0,str.length()-1);
-			// if (j > 0) {
-			// strbazhi = str.substring(0, str.length() - 1);
-			// }
-			String strbazhi = getXuanzhong();
-
-			Defineframe defineframe = new Defineframe();
-			defineframe.getTextField().setText(strbazhi);
-			defineframe.setVisible(true);
-			defineframe.getButton().addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					defineframe.dispose();
-					// System.out.println("guangbudiao");
-					// dispose();
-				}
-			});
-			defineframe.getBtnNewButton().addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					// System.out.println("确定");
-					String[] mStrings = defineframe.getTextField().getText().split(",");
-					// System.out.println(mStrings.length);
-					int j = mStrings.length;
-					int[] a = new int[mStrings.length];
-					if (!mStrings[0].equals("")) {
-						for (int i = 0; i < mStrings.length; i++) {
-							a[i] = Integer.parseInt(mStrings[i]);
-						}
-						Bazhi[] bazhiijk = new Bazhi[j];
-						for (int i = 0; i < j; i++) {
-							bazhiijk[i] = bazhis[a[i] - 1];
-						}
-						Guanlifenzu.creatfenzu(bazhiijk);
-						// Guanlifenzu.creatnewpanel();
-						Guanlifenzu.showpanel();
-					} else {
-						Bazhi[] bazhikji = new Bazhi[0];
-						Guanlifenzu.creatfenzu(bazhikji);
-						// Guanlifenzu.creatnewpanel();
-						Guanlifenzu.showpanel();
-					}
-					defineframe.dispose();
-				}
-			});
-
-			// Bazhi[] bazhiijk=new Bazhi[j];
-			// for(int i=0;i<j;i++){
-			// bazhiijk[i]=((Bazhi)(tubiaos[k[i]]));
-			// }
-			// Guanlifenzu.creatfenzu(bazhiijk);
-			// Guanlifenzu.creatnewpanel();
-			// Guanlifenzu.showpanel();
-		}
-	}
-
-	private class Myactionlistener10 implements ActionListener {
+	private class Suofanglistener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (zinout == 0) {
 				tmuiControlPanel.setVisible(false);
@@ -544,20 +508,10 @@ public class Daba1 extends JFrame implements Datainterface {
 	private class Mymouse extends MouseAdapter {
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO 自动生成的方法存根
-			// super.mouseReleased(e);
-			// huitupanel.setPainwitch(0);
-			// huitupanel.display(data, pointnum);
-			// // huitupanel.displayzhengti(tubiaos, pointnum);
-			// for (int i = 0; i < pointnum; i++) {
-			// tuozhuaibuffx[i] = datacurrent[i][0];
-			// tuozhuaibuffy[i] = datacurrent[i][1];
-			// }
-			////////////////////////////////////////////////////////////////////////
+
 			super.mouseReleased(e);
 			huitupanel.setPainwitch(0);
 			huitupanel.displayzhengti(tubiaos, pointnum);
-			// System.out.println(tubiaos[6].getPointx());
 			for (int i = 0; i < pointnum; i++) {
 				tuozhuaibuffx[i] = tubiaos[i].getPointx();
 				tuozhuaibuffy[i] = tubiaos[i].getPointy();
@@ -566,96 +520,12 @@ public class Daba1 extends JFrame implements Datainterface {
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			// if (tuozhuai) {
-			// for (int i = 0; i < pointnum; i++) {
-			// datacurrent[i][0] = tuozhuaibuffx[i] + e.getX() - x;
-			// datacurrent[i][1] = tuozhuaibuffy[i] + e.getY() - y;
-			// }
-			// huitupanel.display(datacurrent, pointnum);
-			// // huitupanel.displayzhengti(tubiaos, pointnum);
-			// } else if (dianjifangda == false && dianjisuoxiao == false) {
-			// if ((e.getX() - x > 0) && (e.getY() - y > 0)) {
-			// huitupanel.setPainwitch(1);
-			// for (int i = 0; i < pointnum; i++) {
-			//
-			// if ((data[i][0] > x - 32) && (data[i][0] < e.getX()) &&
-			// (data[i][1] > y - 32)
-			// && (data[i][1] < e.getY()) && (data[i][8] == 1)) {
-			// data[i][5] = 1;
-			// data[i][4] = 0;
-			// data[i][6] = 0;
-			// data[i][7] = 0;
-			// } else if (data[i][8] == 1) {
-			// data[i][5] = 0;
-			// data[i][4] = 0;
-			// data[i][6] = 0;
-			// data[i][7] = 0;
-			// }
-			// }
-			// } else if ((e.getX() - x > 0) && (e.getY() - y < 0)) {
-			// huitupanel.setPainwitch(2);
-			// for (int i = 0; i < pointnum; i++) {
-			// if ((data[i][0] > x - 32) && (data[i][0] < e.getX()) &&
-			// (data[i][1] > e.getY() - 32)
-			// && (data[i][1] < y) && (data[i][8] == 1)) {
-			// data[i][5] = 1;
-			// data[i][4] = 0;
-			// data[i][6] = 0;
-			// data[i][7] = 0;
-			// } else if (data[i][8] == 1) {
-			// data[i][5] = 0;
-			// data[i][4] = 0;
-			// data[i][6] = 0;
-			// data[i][7] = 0;
-			// }
-			// }
-			// } else if ((e.getX() - x < 0) && (e.getY() - y < 0)) {
-			// huitupanel.setPainwitch(3);
-			// for (int i = 0; i < pointnum; i++) {
-			// if ((data[i][0] > e.getX() - 32) && (data[i][0] < x) &&
-			// (data[i][1] > e.getY() - 32)
-			// && (data[i][1] < y) && (data[i][8] == 1)) {
-			// data[i][5] = 1;
-			// data[i][4] = 0;
-			// data[i][6] = 0;
-			// data[i][7] = 0;
-			// } else if (data[i][8] == 1) {
-			// data[i][5] = 0;
-			// data[i][4] = 0;
-			// data[i][6] = 0;
-			// data[i][7] = 0;
-			// }
-			// }
-			// } else if ((e.getX() - x < 0) && (e.getY() - y > 0)) {
-			// huitupanel.setPainwitch(4);
-			// for (int i = 0; i < pointnum; i++) {
-			// if ((data[i][0] > e.getX() - 32) && (data[i][0] < x) &&
-			// (data[i][1] > y - 32)
-			// && (data[i][1] < e.getY()) && (data[i][8] == 1)) {
-			// data[i][5] = 1;
-			// data[i][4] = 0;
-			// data[i][6] = 0;
-			// data[i][7] = 0;
-			// } else if (data[i][8] == 1) {
-			// data[i][5] = 0;
-			// data[i][4] = 0;
-			// data[i][6] = 0;
-			// data[i][7] = 0;
-			// }
-			// }
-			// }
-			// // }
-			// huitupanel.display2(x, y, e.getX(), e.getY(), data);
-			// // huitupanel.displayjuxing(x, y, e.getX(), e.getY(), tubiaos);
-			// }
-			///////////////////////////////////////////////////////////////////////////////
 			if (tuozhuai) {
 				for (int i = 0; i < pointnum; i++) {
 					tubiaos[i].setPointx(tuozhuaibuffx[i] + e.getX() - x);
 					tubiaos[i].setPointy(tuozhuaibuffy[i] + e.getY() - y);
 				}
 				huitupanel.displayzhengti(tubiaos, pointnum);
-				// huitupanel.displayzhengti(tubiaos, pointnum);
 			} else if (dianjifangda == false && dianjisuoxiao == false) {
 				if ((e.getX() - x > 0) && (e.getY() - y > 0)) {
 					huitupanel.setPainwitch(1);
@@ -741,53 +611,6 @@ public class Daba1 extends JFrame implements Datainterface {
 		// 鼠标点击事件若是靶则动作
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// x = e.getX();
-			// y = e.getY();
-			// if (e.getButton() == MouseEvent.BUTTON3) {
-			// // 弹出右键菜单
-			// popupMenu.show(huitupanel, e.getX(), e.getY());
-			// } else {
-			// if (dianjifangda) {
-			// for (int i = 0; i < pointnum; i++) {
-			// datacurrent[i][0] = (int) (1.1 * (datacurrent[i][0] - x) + x);
-			// datacurrent[i][1] = (int) (1.1 * (datacurrent[i][1] - y) + y);
-			//
-			// }
-			// huitupanel.display(datacurrent, pointnum);
-			// // huitupanel.displayzhengti(tubiaos, pointnum);
-			// } else if (dianjisuoxiao) {
-			//
-			// for (int i = 0; i < pointnum; i++) {
-			// datacurrent[i][0] = (int) ((datacurrent[i][0] - x) / 1.1 + x);
-			// datacurrent[i][1] = (int) (((datacurrent[i][1] - y)) / 1.1 + y);
-			//
-			// }
-			// huitupanel.display(datacurrent, pointnum);
-			// // huitupanel.displayzhengti(tubiaos, pointnum);
-			// // }
-			// } else {
-			// int i;
-			// for (i = 0; i < pointnum; i++) {
-			// if ((e.getX() > data[i][0]) && (e.getX() < (data[i][0] + 54)) &&
-			// (e.getY() > data[i][1])
-			// && (e.getY() < (data[i][1] + 54)) && ((data[i][8] == 1) ||
-			// (data[i][8] == 2))) {
-			// data[i][4] = 1;
-			// data[i][5] = 0;
-			// data[i][6] = 0;
-			// data[i][7] = 0;
-			// data[i][8] = 0;
-			// } else if (data[i][8]==1) {
-			// data[i][4] = 0;
-			// data[i][5] = 0;
-			// data[i][6] = 0;
-			// data[i][7] = 0;
-			// }
-			// }
-			// huitupanel.display(data, pointnum);
-			// }
-			// }
-			//////////////////////////////////////////////////////////////////////////////
 			x = e.getX();
 			y = e.getY();
 			if (e.getButton() == MouseEvent.BUTTON3) {
@@ -804,18 +627,13 @@ public class Daba1 extends JFrame implements Datainterface {
 
 					for (int i = 0; i < pointnum; i++) {
 						tubiaos[i].setPointx((int) ((tubiaos[i].getPointx() - x) / 1.1 + x));
-						// datacurrent[i][1] = (int) (((datacurrent[i][1] - y))
-						// / 1.1 + y);
 						tubiaos[i].setPointy((int) (((tubiaos[i].getPointy() - y)) / 1.1 + y));
 
 					}
-					// huitupanel.display(datacurrent, pointnum);
 					huitupanel.displayzhengti(tubiaos, pointnum);
-					// }
 				} else {
 					int i;
 					for (i = 0; i < pointnum; i++) {
-						// System.out.println(9999);
 						if (tubiaos[i] instanceof Bazhi) {
 							if ((e.getX() > tubiaos[i].getPointx()) && (e.getX() < (tubiaos[i].getPointx() + 54))
 									&& (e.getY() > tubiaos[i].getPointy()) && (e.getY() < (tubiaos[i].getPointy() + 54))
@@ -823,6 +641,7 @@ public class Daba1 extends JFrame implements Datainterface {
 											|| (((Bazhi) (tubiaos[i])).getSuodingyf() == 2))) {
 								((Bazhi) (tubiaos[i])).setIsxuanzhong(false);
 								((Bazhi) (tubiaos[i])).setIsdongzuo(true);
+								commandlistenerInterface.bazhiAction(((Bazhi) (tubiaos[i])));
 								((Bazhi) (tubiaos[i])).setIsdazhong(false);
 								((Bazhi) (tubiaos[i])).setIsweidazhong(false);
 								((Bazhi) (tubiaos[i])).setSuodingyf(0);
@@ -841,16 +660,6 @@ public class Daba1 extends JFrame implements Datainterface {
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			// if ((e.getX() > (bfx - 3)) && (e.getX() < (bfx + 60)) &&
-			// (e.getY() > bfy - 54) && (e.getY() < (bfy))) {
-			//
-			// } else {
-			// huitupanel.setPainwitch(0);
-			// bfx = 0;
-			// bfy = 0;
-			// huitupanel.display(data, pointnum);
-			// }
-			////////////////////////////////////////////////////////////////////////////////
 			if (biaoqianstate) {
 				if (tubiaos[buffbianhao] instanceof Bazhi) {
 					if ((e.getX() > (bfx - 3)) && (e.getX() < (bfx + 57)) && (e.getY() > bfy - 62)
@@ -878,28 +687,7 @@ public class Daba1 extends JFrame implements Datainterface {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			// int i;
-			// for (i = 0; i < pointnum; i++) {
-			// if ((e.getX() > (data[i][0] + 5)) && (e.getX() < (data[i][0] + 54
-			// - 5)) && (e.getY() > data[i][1] - 24)
-			// && (e.getY() < (data[i][1]))) {
-			// if ((data[i][2] == 1)) {
-			// huitupanel.setPainwitch(5);
-			// bfx = data[i][0];
-			// bfy = data[i][1];
-			// break;
-			// } else {
-			// huitupanel.setPainwitch(6);
-			// bfx = data[i][0];
-			// bfy = data[i][1];
-			// break;
-			// }
-			// } else
-			// huitupanel.setPainwitch(0);
-			// }
-			// huitupanel.display3(data[i][0], data[i][1], data, data[i][3]);
 
-			//////////////////////////////////////////////////////////////////////////
 			int i;
 			int bianhao = 0;
 			buffbianhao = 0;
@@ -928,16 +716,39 @@ public class Daba1 extends JFrame implements Datainterface {
 					biaoqianstate = false;
 				}
 			}
-			// System.out.println(i);
 			huitupanel.displayxinxi(tubiaos[buffbianhao].getPointx(), tubiaos[buffbianhao].getPointy(), tubiaos,
 					bianhao);
 		}
+	}
+
+	@Override
+	public void dataInitial(Bazhi[] bazhis, Dabarenyuan[] dabarenyuans) {
+		// TODO 自动生成的方法存根
+		System.out.println("数据初始化");
+	}
+
+	@Override
+	public void dataInitial(Tubiao[] tubiaos) {
+		// TODO 自动生成的方法存根
+		System.out.println("数据初始化");
+	}
+
+	@Override
+	public void dataUpdate(Bazhi[] bazhis, Dabarenyuan[] dabarenyuans) {
+		// TODO 自动生成的方法存根
+		System.out.println("数据更新");
+		
+	}
+
+	@Override
+	public void dataUpdate(Tubiao[] tubiaos) {
+		// TODO 自动生成的方法存根
+		System.out.println("数据更新");
 	}
 }
 
 class Reflesh extends Thread {
 	private Huitupanel huitupanel = new Huitupanel();
-	private int j = 1;
 	private boolean w = true;
 	Random random = new Random();
 
@@ -952,58 +763,26 @@ class Reflesh extends Thread {
 				// TODO 自动生成的 catch 块
 				e.printStackTrace();
 			}
-			// for (int i = 0; i < Daba1.pointnum; i++) {
-			// if (Daba1.data[i][2] == 1 && (Daba1.data[i][8] == 0)) {
-			// // Daba1.data[i][8]=1;
-			// if (Daba1.data[i][3] % 2 == 0) {
-			// Daba1.data[i][6] = (new Random().nextInt(10)) < 5 ? 1 : 0;
-			// Daba1.data[i][7] = 1 - Daba1.data[i][6];
-			// Daba1.data[i][4] = 0;
-			// Daba1.data[i][5] = 0;
-			// } else {
-			// Daba1.data[i][6] = 1 - j;
-			// Daba1.data[i][7] = 1 - Daba1.data[i][6];
-			// Daba1.data[i][4] = 0;
-			// Daba1.data[i][5] = 0;
-			// }
-			// Daba1.data[i][8] = 2;
-			// }
-			// }
-			// j = 1 - j;
-			// huitupanel.display(Daba1.data, Daba1.pointnum);
 
-			//////////////////////////////////////////////////////////////////////////
 			for (int i = 0; i < Daba1.pointnum; i++) {
 				if (Daba1.tubiaos[i] instanceof Bazhi) {
 					if (((Bazhi) (Daba1.tubiaos[i])).getSuodingyf() == 0) {
-						// Daba1.data[i][8]=1;
 						if (((Bazhi) (Daba1.tubiaos[i])).getBianhao() % 2 == 0) {
-							// Daba1.data[i][6] = (new Random().nextInt(10)) < 5
-							// ? 1 : 0;
 							((Bazhi) (Daba1.tubiaos[i])).setIsweidazhong(((random.nextInt(10)) < 5 ? true : false));
-							// Daba1.data[i][7] = 1 - Daba1.data[i][6];
 							((Bazhi) (Daba1.tubiaos[i])).setIsdazhong(!((Bazhi) (Daba1.tubiaos[i])).isIsweidazhong());
-							// Daba1.data[i][4] = 0;
 							((Bazhi) (Daba1.tubiaos[i])).setIsxuanzhong(false);
-							// Daba1.data[i][5] = 0;
 							((Bazhi) (Daba1.tubiaos[i])).setIsdongzuo(false);
 						} else {
-							// Daba1.data[i][6] = 1 - j;
 							((Bazhi) (Daba1.tubiaos[i])).setIsweidazhong(!w);
-							// Daba1.data[i][7] = 1 - Daba1.data[i][6];
 							((Bazhi) (Daba1.tubiaos[i])).setIsdazhong(!((Bazhi) (Daba1.tubiaos[i])).isIsweidazhong());
-							// Daba1.data[i][4] = 0;
 							((Bazhi) (Daba1.tubiaos[i])).setIsxuanzhong(false);
-							// Daba1.data[i][5] = 0;
 							((Bazhi) (Daba1.tubiaos[i])).setIsdongzuo(false);
 						}
-						// Daba1.data[i][8] = 2;
 						((Bazhi) (Daba1.tubiaos[i])).setSuodingyf(2);
 					}
 				}
 			}
 			w = !w;
-			// huitupanel.display(Daba1.data, Daba1.pointnum);
 			huitupanel.displayzhengti(Daba1.tubiaos, Daba1.pointnum);
 		}
 	}
